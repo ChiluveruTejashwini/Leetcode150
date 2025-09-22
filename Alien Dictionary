@@ -1,0 +1,39 @@
+class Solution:
+    def foreignDictionary(self, words: List[str]) -> str:
+        di = defaultdict(list)
+        indegree = {}
+
+        for word in words:
+            for char in word:
+                indegree[char] = 0
+        
+        for i in range(1,len(words)):
+            for j in range(min(len(words[i-1]),len(words[i]))):
+                if words[i-1][j]!=words[i][j]:
+                    di[words[i-1][j]].append(words[i][j])
+                    indegree[words[i][j]]+=1
+                    break
+                else:
+                    if len(words[i]) < len(words[i-1]):
+                        return ""
+        queue=[]
+        for char in indegree:
+            if indegree[char]==0:
+                queue.append(char)
+        res=[]
+        
+        while queue:
+            ele=queue.pop()
+            res.append(ele)
+
+            for neigh in di[ele]:
+                indegree[neigh]-=1
+                if indegree[neigh]==0:
+                    queue.append(neigh)
+
+        return "".join(res) if len(res) == len(indegree) else ""
+
+li=["mnop","nopq","opqr","pqrs","qrst","rstu","stuv","tuvw","uvwx","vwxy","wxyz","xyz","yz","z","mnopqr","nopqrs","opqrst","pqrstu","qrstuv","rstuvw","stuvwx","tuvwxy","uvwxyz","vwxyz","wxyza","xyzab","yzabc","zabcd"]
+
+res=Solution().foreignDictionary(li)
+print(res)
