@@ -1,0 +1,35 @@
+class Solution:
+    def ladderLength(self, beginWord: str, endWord: str, wordList: List[str]) -> int:
+        if endWord not in wordList:
+            return 0
+
+        di = collections.defaultdict(list)
+        wordList.append(beginWord)
+        for word in wordList:
+            for i in range(len(word)):
+                w=word[:i]+"*"+word[i+1:]
+                di[w].append(w)
+        queue=deque([beginWord])
+        visited=set()
+        res=0
+        while queue:
+            for _ in range(len(queue)):
+                wor=queue.pop()
+                if wor == endWord:
+                    return res
+                res+=1
+                for i in range(len(wor)):
+                    new=wor[:i]+"*"+wor[i+1:]
+                    for neigh in di[new]:
+                        if neigh !=wor and neigh not in visited:
+                            visited.add(neigh)
+                            queue.append(neigh)
+        return res
+li = ["bat","bag","sag","dag","dot"]
+beginWord = "cat"
+endWord = "sag"
+
+print(Solution().ladderLength(beignWord,endWord, li))
+        
+
+        
