@@ -1,0 +1,23 @@
+class Solution:
+    def networkDelayTime(self, times: List[List[int]], n: int, k: int) -> int:
+        di = defaultdict(list)
+
+        for u,v,t in times:
+            di[u].append((v,t))
+
+        res=[float("inf")]*(n+1)
+        heap=[(0,k)]
+        res[k]=0
+        while heap:
+            t,node=heapq.heappop(heap)
+            if res[node]<t:
+                continue
+            for neigh,te in di[node]:
+                if res[neigh]>t+te:
+                    res[neigh]=t+te
+                    heapq.heappush(heap,(t+te,neigh))
+        return max(res[1:]) if max(res[1:])!=float("inf") else -1
+li=[[1,2,1],[2,3,1],[1,4,4],[3,4,1]] 
+n = 4
+k = 1
+print(Solution().networkDelayTime(li,n,k))
