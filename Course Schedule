@@ -1,0 +1,23 @@
+class Solution:
+    def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
+        indegree = [0] * numCourses
+        di = defaultdict(list)
+
+        for ele in prerequisites:
+            indegree[ele[0]] += 1
+            di[ele[1]].append(ele[0])
+
+        queue = deque([i for i in range(numCourses) if indegree[i] == 0])
+        stack = []
+
+        while queue:
+            ele=queue.pop()
+            stack.append(ele)
+            for neigh in di[ele]:
+                indegree[neigh]-=1
+                if indegree[neigh]==0:
+                    queue.append(neigh)
+        return stack if len(stack)==numCourses else []
+n = 3
+pre = [[0,1],[1,2],[2,0]]
+print(Solution().findOrder(n,pre))
