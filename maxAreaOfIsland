@@ -1,0 +1,47 @@
+class Solution:
+    def maxAreaOfIsland(self, grid: List[List[int]]) -> int:
+        
+        directions = [[1, 0], [-1, 0], [0, 1], [0, -1]]
+        n=len(grid[0])
+        m=len(grid)
+        area=0
+        visited=set()
+        def totalarea(i, j):
+            if i < 0 or j < 0 or i >= m or j >= n or grid[i][j] == 0 or (i, j) in visited:
+                return 0
+
+            visited.add((i, j))
+            res = 1
+            for dx, dy in directions:
+                res += totalarea(i + dx, j + dy)
+            
+            return res
+
+        for i in range(m):
+            for j in range(n):
+                if (i,j) not in visited and grid[i][j]:
+                   area =max( area, totalarea(i,j))
+        return area
+ grid = [
+  [0,1,1,0,1],
+  [1,0,1,0,1],
+  [0,1,1,0,1],
+  [0,1,0,0,1]
+]
+print(Solution().maxAreaOfIsland(grid))
+        
+
+
+
+                    
+
+            
+
+
+
+
+
+
+
+
+        
