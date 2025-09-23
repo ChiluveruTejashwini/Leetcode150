@@ -1,0 +1,37 @@
+class Solution:
+    def solve(self, board: List[List[str]]) -> None:
+        ROWS, COLS = len(board), len(board[0])
+
+        def capture(r, c):
+            if (r < 0 or c < 0 or r == ROWS or 
+                c == COLS or board[r][c] != "O" or (r,c) in visit
+            ):
+                return
+            visit.add((r,c))
+            for dx,dy in [(1,0),(-1,0),(0,1),(0,-1)]:
+                capture(dx+r,dy+c)
+        visit=set()
+
+        for r in range(ROWS):
+            if board[r][0] == "O" and (r,0) not in visit:
+                capture(r, 0)
+            if board[r][COLS - 1] == "O"and (r,COLS-1) not in visit:
+                capture(r, COLS - 1)
+        
+        for c in range(COLS):
+            if board[0][c] == "O"and (0,c) not in visit:
+                capture(0, c)
+            if board[ROWS - 1][c] == "O" and (ROWS-1,c) not in visit:
+                capture(ROWS - 1, c)
+
+        for r in range(ROWS):
+            for c in range(COLS):
+                if board[r][c] == "O" and (r,c) not in visit:
+                    board[r][c] = "X"
+board = [
+  ["X","X","X","X"],
+  ["X","O","O","X"],
+  ["X","O","O","X"],
+  ["X","X","X","O"]
+]
+print(Solution().solve(board))
