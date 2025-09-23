@@ -1,0 +1,86 @@
+
+class TrieNode:
+    def __init__(self):
+        self.children = {}
+        self.word = None  # store word at end node
+
+class Solution2:
+    def findWords(self, board: List[List[str]], words: List[str]) -> List[str]:
+        # Build Trie
+        root = TrieNode()
+        for word in words:
+            node = root
+            for ch in word:
+                if ch not in node.children:
+                    node.children[ch] = TrieNode()
+                node = node.children[ch]
+            node.word = word
+
+        m, n = len(board), len(board[0])
+        res = []
+        directions = [(1,0), (-1,0), (0,1), (0,-1)]
+
+        def dfs(i, j, node):
+            ch = board[i][j]
+            if ch not in node.children:
+                return
+            nxt = node.children[ch]
+            if nxt.word:  # found a word
+                res.append(nxt.word)
+                nxt.word = None  # avoid duplicates
+
+            board[i][j] = "#"  # mark visited
+            for x, y in directions:
+                ni, nj = i+x, j+y
+                if 0 <= ni < m and 0 <= nj < n and board[ni][nj] != "#":
+                    dfs(ni, nj, nxt)
+            board[i][j] = ch  # backtrack
+
+        for i in range(m):
+            for j in range(n):
+                dfs(i, j, root)
+
+        return res
+
+
+class Solution:
+    def findWords(self, board: List[List[str]], words: List[str]) -> List[str]:
+        directions = [[1, 0], [-1, 0], [0, 1], [0, -1]]
+        
+        def dfs(i, j, word, idx, visited):
+            if idx == len(word):
+                return True
+            if i < 0 or i >= m or j < 0 or j >= n or board[i][j] != word[idx] or (i, j) in visited:
+                return False
+            
+            visited.add((i, j))
+            for dx, dy in directions:
+                if dfs(i + dx, j + dy, word, idx + 1, visited):
+                    return True
+            visited.remove((i, j))
+            return False
+        m, n = len(board), len(board[0])  # Fixed index range
+        res = []  # Changed `ans` to `res` to match return value
+        
+        for ele in words:
+            found = False
+            for i in range(m):
+                for j in range(n):
+                    if board[i][j] == ele[0]:
+                        if dfs(i, j, ele, 0, set()):
+                            res.append(ele)
+                            found = True
+                            break
+                if found:
+                    break  # Stop searching once the word is found
+        
+        return res
+board = [
+  ["a","b","c","d"],
+  ["s","a","a","t"],
+  ["a","c","k","e"],
+  ["a","c","d","n"]
+]
+words = ["bat","cat","back","backend","stack"]
+print(Solution().findWords(board,words))
+print(Solution2().findWords(board,words))
