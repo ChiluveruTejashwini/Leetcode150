@@ -1,0 +1,55 @@
+class TreeNode:
+    def __init__(self):
+        self.children = {}
+        self.end = False
+
+class WordDictionary:
+
+    def __init__(self):
+        self.root=TreeNode()
+
+    def addWord(self, word: str) -> None:
+        cur=self.root
+        for c in word:
+            if c not in cur.children:
+                cur.children[c]=TreeNode()
+            cur=cur.children[c]
+        cur.end=True
+
+    def search(self, word: str) -> bool:
+        node=self.root
+        def dfs(i,node):
+            if i==len(word):
+                return node.end
+            if word[i]==".":
+                for child in node.children.values():
+                    if dfs(i+1,child):
+                        return True
+                return False
+            else:
+                if word[i] not in node.children:
+                    return False
+                
+                return dfs(i+1,node.children[word[i]])
+        return dfs(0,node)
+
+
+ops = ["WordDictionary", "addWord", "addWord", "addWord", "search", "search", "search", "search"]
+args = [[], ["day"], ["bay"], ["may"], ["say"], ["day"], [".ay"], ["b.."]]
+
+wd = None
+results = []
+
+for op, arg in zip(ops, args):
+    if op == "WordDictionary":
+        wd = WordDictionary()
+        results.append(None)
+    elif op == "addWord":
+        wd.addWord(arg[0])
+        results.append(None)
+    elif op == "search":
+        results.append(wd.search(arg[0]))
+
+print(results)
+        
+
