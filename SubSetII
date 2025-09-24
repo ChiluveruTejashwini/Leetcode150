@@ -1,0 +1,17 @@
+class Solution:
+    def subsetsWithDup(self, nums: List[int]) -> List[List[int]]:
+        def dfs(i,arr,res):
+            if i==len(nums):
+                res.add(tuple(arr.copy()))
+            if i >=len(nums):
+                return
+            arr.append(nums[i])
+            dfs(i+1,arr,res)
+            arr.pop()
+            dfs(i+1,arr,res)
+            return res
+        res=set()
+        nums.sort()
+        return [list(s)for s in dfs(0,[],res)]
+nums=[1,2,1]
+print(Solution().subsetsWithDup(nums))
