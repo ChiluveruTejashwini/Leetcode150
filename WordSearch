@@ -1,0 +1,31 @@
+class Solution:
+    def exist(self, board: List[List[str]], word: str) -> bool:
+        di = [(1,0), (-1,0), (0,1), (0,-1)]  # Directions (Down, Up, Right, Left)
+        m, n = len(board), len(board[0])
+        visit=set()
+        def dfs(i, j, w):
+            if w == len(word) - 1:
+                return True
+            visit.add((i, j))
+            for x, y in di:
+                ni, nj = i + x, j + y
+                if 0 <= ni < m and 0 <= nj < n and (ni, nj) not in visit and board[ni][nj] == word[w+1]:
+                    if dfs(ni, nj, w+1):
+                        return True
+            visit.remove((i, j))
+            return False
+
+        for i in range(m):
+            for j in range(n):
+                if board[i][j] == word[0]:
+                    if dfs(i, j, 0):
+                        return True
+        return False
+board = [
+  ["A","B","C","D"],
+  ["S","A","A","T"],
+  ["A","C","A","E"]
+]
+word = "CAT"
+print(Solution().exist(board,word))
+        
