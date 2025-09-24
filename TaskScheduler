@@ -1,0 +1,38 @@
+class Solution:
+    def leastInterval(self, tasks: List[str], n: int) -> int:
+        di={}
+        for ele in tasks:
+            if ele not in di:
+                di[ele]=1
+            else:
+                di[ele]+=1
+        heap=[]
+        freq = Counter(tasks)
+        heap = [-cnt for cnt in freq.values()]
+        heapq.heapify(heap)
+        q=deque()
+        time=0
+        while heap or q:
+            time+=1
+            if heap:
+                ele =heapq.heappop(heap)
+                if ele+1!=0:
+                    q.append((time+n,ele+1))
+            if q and q[0][0]==time:
+                _,f=q.popleft()
+                heapq.heappush(heap,f)
+        return time
+
+tasks = ["A","A","A","B","C"] 
+n = 3
+print(Solution().leastInterval(tasks,n))
+
+
+
+
+
+
+
+
+
+        
