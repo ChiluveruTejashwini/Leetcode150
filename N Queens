@@ -1,0 +1,32 @@
+class Solution:
+    def solveNQueens(self, n: int) -> List[List[str]]:
+        board = [['.'] * n for _ in range(n)]
+        cols = set()  
+        pd = set() 
+        negd = set() 
+        res = []
+
+        def backtrack(i):
+            if i==n:
+                copy = ["".join(row) for row in board]
+                res.append(copy)
+                return
+            for j in range(n):
+                if j not in cols and (i-j) not in negd and (i+j) not in pd:
+                    board[i][j]="Q"
+                    cols.add(j)
+                    pd.add(i+j)
+                    negd.add(i-j)
+
+                    backtrack(i+1)
+
+                    board[i][j] = '.'
+                    cols.remove(j)
+                    pd.remove(i + j)
+                    negd.remove(i - j)
+        backtrack(0)
+        return res
+n=5
+print(Solution().solveNQueens(n))
+
+        
