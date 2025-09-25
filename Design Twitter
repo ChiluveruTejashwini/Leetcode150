@@ -1,0 +1,50 @@
+class Twitter:
+
+    def __init__(self):
+        self.di=defaultdict(list)
+        self.flow=defaultdict(set)
+        self.time=0
+
+    def postTweet(self, userId: int, tweetId: int) -> None:
+        self.di[userId].append((tweetId,self.time))
+        self.time+=1
+
+    def getNewsFeed(self, userId: int) -> List[int]:
+        feed = self.di[userId][:]
+        for followeeId in self.flow[userId]:
+            feed.extend(self.di[followeeId])
+
+        feed.sort(key=lambda x: -x[1])
+        return [tweetId for tweetId,_ in feed[:10]]
+
+    def follow(self, followerId: int, followeeId: int) -> None:
+        if followeeId!=followerId:
+            self.flow[followerId].add(followeeId)
+
+    def unfollow(self, followerId: int, followeeId: int) -> None:
+        if followeeId in self.flow[followerId]:
+            self.flow[followerId].remove(followeeId)
+t = Twitter()
+
+ops = ["Twitter", "postTweet", "postTweet", "postTweet", "postTweet",
+       "follow", "getNewsFeed", "follow", "unfollow", "getNewsFeed",
+       "postTweet", "unfollow", "getNewsFeed"]
+
+args = [[], [7, 23], [7, 24], [7, 25], [7, 26],
+        [8, 7], [8], [8, 7], [8, 7], [8],
+        [7, 27], [8, 7], [8]]
+
+out = []
+for op, arg in zip(ops, args):
+    if op == "Twitter":
+        out.append(None)
+    elif op == "postTweet":
+        out.append(t.postTweet(*arg))
+    elif op == "follow":
+        out.append(t.follow(*arg))
+    elif op == "unfollow":
+        out.append(t.unfollow(*arg))
+    elif op == "getNewsFeed":
+        out.append(t.getNewsFeed(*arg))
+
+print(out)
