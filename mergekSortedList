@@ -1,0 +1,54 @@
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+
+class Solution:
+    def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
+        cur1=list1
+        cur2=list2
+        d=ListNode()
+        newhead=d
+        while cur1 and cur2:
+            v1=cur1.val
+            v2=cur2.val
+            if v1<v2:
+                newhead.next=cur1
+                cur1=cur1.next
+            else:
+                newhead.next=cur2
+                cur2=cur2.next
+
+        if cur1:
+            newhead.next=cur1
+        if cur2:
+            newhead.next=cur2
+        return d.next
+            
+
+def build_linked_list(nums):
+    dummy = ListNode()
+    cur = dummy
+    for n in nums:
+        cur.next = ListNode(n)
+        cur = cur.next
+    return dummy.next
+
+# Helper to convert linked list back to Python list
+def linked_list_to_list(node):
+    res = []
+    while node:
+        res.append(node.val)
+        node = node.next
+    return res
+
+# --- Testing ---
+l1 = build_linked_list([2,3,8])   # number 342
+l2 = build_linked_list([4,5,6])   # number 465
+
+sol = Solution()
+print(sol.mergeTwoLists(l1, l2))
+
+            
+        
