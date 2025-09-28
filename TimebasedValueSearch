@@ -1,0 +1,47 @@
+class TimeMap:
+    def __init__(self):
+        self.di={}
+        
+    def set(self, key: str, value: str, timestamp: int) -> None:
+        if key in self.di:
+            self.di[key].append((timestamp,value))
+        else:
+            self.di[key]=[(timestamp,value)] 
+        
+
+    def get(self, key: str, timestamp: int) -> str:
+        if key not in self.di:
+            return ""
+        res=""
+        l,r=0,len(self.di[key])-1
+        while l<=r:
+            mid=(l+r)//2
+            if self.di[key][mid][0]==timestamp:
+                return self.di[key][mid][1]
+            if self.di[key][mid][0]>timestamp:
+                r=mid-1
+            if self.di[key][mid][0]<timestamp:
+                res=self.di[key][mid][1]
+                l=mid+1
+        return res
+tm = TimeMap()
+
+# Add values
+tm.set("foo", "bar1", 1)
+tm.set("foo", "bar2", 3)
+tm.set("foo", "bar3", 5)
+
+# Exact matches
+print(tm.get("foo", 1))  # Expected: bar1
+print(tm.get("foo", 3))  # Expected: bar2
+print(tm.get("foo", 5))  # Expected: bar3
+
+# In between timestamps
+print(tm.get("foo", 2))  # Expected: bar1 (largest <= 2)
+print(tm.get("foo", 4))  # Expected: bar2 (largest <= 4)
+
+# Before any value
+print(tm.get("foo", 0))  # Expected: "" (no entry <= 0)
+
+# After all values
+print(tm.get("foo", 10))
