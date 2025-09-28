@@ -1,0 +1,40 @@
+class Solution:
+    def minEatingSpeed(self, piles: List[int], h: int) -> int:
+        left = 1;
+        right = max(piles)
+        res=""
+        while left<=right:
+            m = (left + right)//2
+            if self.check(m,piles,h):
+                res=m
+                right=m-1
+            else:
+                left=m+1
+
+        return res
+
+    def check(self, k, piles, h):
+        c=0
+        for ele in piles:
+            c+=math.ceil(ele/k)
+            if c>h:
+                return False
+        return True
+
+piles = [1,4,3,2]
+h = 9
+print(Solution().minEatingSpeed(piles,h))
+
+
+
+
+            
+            
+
+                
+
+
+
+
+
+        
