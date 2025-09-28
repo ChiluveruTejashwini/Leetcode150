@@ -1,0 +1,27 @@
+class Solution:
+    def fractionToDecimal(self, numerator: int, denominator: int) -> str:
+        if numerator == 0:
+            return "0"
+        fraction = []
+        if (numerator < 0) != (denominator < 0):
+            fraction.append("-")
+        fraction.append(str(abs(numerator)//abs(denominator)))
+        re=abs(numerator)%abs(denominator)
+        if re==0:
+            return "".join(fraction)
+        fraction.append(".")
+        lookup={}
+        while re!=0:
+            if re in lookup:
+                fraction.insert(lookup[re],"(")
+                fraction.append(")")
+                break
+
+            lookup[re]=len(fraction)
+            re*=10
+            fraction.append(str(re//abs(denominator)))
+            re%=abs(denominator)
+        return "".join(fraction)
+numerator = 4 
+denominator = 333
+print(Solution().fractionToDecimal(numerator,denominator))
