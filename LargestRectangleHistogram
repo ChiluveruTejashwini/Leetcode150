@@ -1,0 +1,21 @@
+class Solution:
+    def largestRectangleArea(self, heights: List[int]) -> int:
+        
+        ma = 0
+        stack = []
+        for i in range(len(heights)):
+            start=i
+            while stack and stack[-1][0]>heights[i]:
+                height,ind=stack.pop()
+                area=(i-ind)*height
+                ma=max(ma,area)
+                start=ind
+            stack.append((heights[i],start))
+        while stack:
+            height,ind=stack.pop()
+            area=(len(heights)-ind)*height
+            ma=max(ma,area)
+        return ma
+heights = [7,1,7,2,2,4]
+print(Solution().heights(heights))
+
