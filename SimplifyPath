@@ -1,0 +1,18 @@
+class Solution:
+    def simplifyPath(self, path: str) -> str:
+        stack=[]
+        li=path.split("/")
+        i=0
+        while i<len(li):
+            if li[i]=="/":
+                i+=1
+                continue
+            if li[i] and li[i]!="." and li[i]!="..":
+                stack.append(li[i])
+            elif li[i] and li[i]=="..":
+                if stack:
+                    stack.pop()
+            i+=1
+        return "/"+"/".join(stack)
+l="/home/user/Documents/../Pictures"
+print(Solution().simplifyPath(l))
