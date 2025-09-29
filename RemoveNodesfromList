@@ -1,0 +1,22 @@
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def modifiedList(self, nums: List[int], head: Optional[ListNode]) -> Optional[ListNode]:
+        cur=head
+        nu=set(nums)
+        li=[]
+        while cur:
+            if cur.val not in nu:
+                li.append(cur)
+            cur=cur.next
+        start=li[0]
+        root=li[0]
+        for ele in li[1:]:
+            start.next=ele
+            start=ele
+        start.next=None
+        return root
+        
