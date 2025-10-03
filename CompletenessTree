@@ -1,0 +1,60 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def isCompleteTree(self, root: Optional[TreeNode]) -> bool:
+        queue = deque([root])
+        found_null = False
+
+        while queue:
+            node = queue.popleft()
+            if not node:
+                found_null = True
+            else:
+                if found_null:
+                    return False
+                queue.append(node.left)
+                queue.append(node.right)
+
+        return True
+            
+
+def build_tree(values):
+    """ Build tree from level-order list (None for missing). """
+    from collections import deque
+    if not values:
+        return None
+    root = TreeNode(values[0])
+    queue = deque([root])
+    i = 1
+    while queue and i < len(values):
+        node = queue.popleft()
+        if node:
+            if i < len(values) and values[i] is not None:
+                node.left = TreeNode(values[i])
+            queue.append(node.left if node.left else None)
+            i += 1
+            if i < len(values) and values[i] is not None:
+                node.right = TreeNode(values[i])
+            queue.append(node.right if node.right else None)
+            i += 1
+    return root
+
+# Case 1: Complete tree
+root1 = build_tree([1, 2, 3, 4, 5, 6])
+print(Solution().isCompleteTree(root1))  # ✅ True
+
+# Case 2: Not complete (missing left child before right child)
+root2 = build_tree([1, 2, 3, None, 5])
+print(Solution().isCompleteTree(root2))  # ❌ False
+
+# Case 3: Single node
+root3 = build_tree([1])
+print(Solution().isCompleteTree(root3))  # ✅ True
+
+# Case 4: Full complete tree
+root4 = build_tree([1, 2, 3, 4, 5, 6, 7])
+print(Solution().isCompleteTree(root4)) 
