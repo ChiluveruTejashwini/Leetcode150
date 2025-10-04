@@ -1,0 +1,37 @@
+from collections import Counter, defaultdict
+
+class Solution:
+    def minWindow(self, s: str, t: str) -> str:
+        if not s or not t:
+            return ""
+        
+        dit = Counter(t)
+        wset = set(t)
+        req = len(dit)
+        di = defaultdict(int)
+        formed, l = 0, 0
+        mi = float("inf")
+        res = ""
+        
+        for i, ele in enumerate(s):
+            di[ele] += 1
+            if ele in dit and di[ele] == dit[ele]:
+                formed += 1
+
+            while formed == req:
+                if mi > (i - l + 1):
+                    mi = i - l + 1
+                    res = s[l:i+1]
+
+                di[s[l]] -= 1
+                if s[l] in dit and di[s[l]] < dit[s[l]]:
+                    formed -= 1
+                l += 1
+        
+        return res
+                    
+s = "ADOBECODEBANC"
+t = "ABC"
+print(Solution().minWindow(s,t))
+            
+
