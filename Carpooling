@@ -1,0 +1,20 @@
+class Solution:
+    def carPooling(self, trips: List[List[int]], capacity: int) -> bool:
+        trips.sort(key= lambda x:x[1])
+        stack=[]
+        c=0
+        for trip in trips:
+            while stack and stack[0][0]<=trip[1]:
+                _,n=heapq.heappop(stack)
+                c-=n
+            if c+trip[0]<=capacity:
+                heapq.heappush(stack,(trip[2],trip[0]))
+                c+=trip[0]
+            else:
+                return False
+        return True
+            
+trips = [[2,1,5],[3,3,7]] 
+capacity = 4
+print(Solution().carPooling(trips,capacity))
+           
