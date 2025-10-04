@@ -1,0 +1,73 @@
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def sortedListToBST(self, head: Optional[ListNode]) -> Optional[TreeNode]:
+        values = []
+        while head:
+            values.append(head.val)
+            head = head.next
+
+        # Step 2: Recursive function to build balanced BST
+        def buildBST(left, right):
+            if left > right:
+                return None
+            mid = (left + right) // 2
+            root = TreeNode(values[mid])
+            root.left = buildBST(left, mid - 1)
+            root.right = buildBST(mid + 1, right)
+            return root
+
+        return buildBST(0, len(values) - 1)
+            
+def build_linked_list(arr):
+    """Helper to create linked list from Python list"""
+    if not arr:
+        return None
+    head = ListNode(arr[0])
+    cur = head
+    for val in arr[1:]:
+        cur.next = ListNode(val)
+        cur = cur.next
+    return head
+
+def inorder_traversal(root):
+    """Inorder traversal of BST -> should match the sorted array"""
+    return inorder_traversal(root.left) + [root.val] + inorder_traversal(root.right) if root else []
+
+def level_order(root):
+    """Level order traversal for structure check"""
+    if not root:
+        return []
+    from collections import deque
+    res, q = [], deque([root])
+    while q:
+        node = q.popleft()
+        if node:
+            res.append(node.val)
+            q.append(node.left)
+            q.append(node.right)
+        else:
+            res.append(None)
+    # trim trailing None’s
+    while res and res[-1] is None:
+        res.pop()
+    return res
+
+# --------- Testing ----------
+arr = [-10, -3, 0, 5, 9]
+head = build_linked_list(arr)
+sol = Solution()
+tree = sol.sortedListToBST(head)
+
+print("Inorder traversal (should match input sorted list):", inorder_traversal(tree))
+print("Level-order structure of tree:", level_order(tree))
+        
