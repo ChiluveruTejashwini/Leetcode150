@@ -1,0 +1,39 @@
+class Solution:
+    def findLadders(self, beginWord: str, endWord: str, wordList: List[str]) -> List[List[str]]:
+        adj=defaultdict(list)
+        for word in wordList:
+            for i in range(len(word)):
+                s=word[:i]+"*"+word[i+1:]
+                adj[s].append(word)
+        queue=deque([(beginWord,[beginWord])])
+        visit=set()
+        
+        res=[]
+        while queue:
+            ele,lis=queue.popleft()
+            visit.add(ele)
+            if ele==endWord:
+                res.append(lis.copy())
+                continue
+            
+            for i in range(len(ele)):
+                s=ele[:i]+"*"+ele[i+1:]
+                for neigh in adj[s]:
+                    if neigh not in visit and neigh!=ele:
+                        queue.append((neigh,lis+[neigh]))
+        nel=[]
+        mi=float("inf")
+        for li in res:
+            if len(li)<mi:
+                mi=len(li)
+        for li in res:
+            if len(li)==mi:
+                nel.append(li)
+
+        return nel
+
+beginWord = "hit" 
+endWord = "cog"
+wordList = ["hot","dot","dog","lot","log","cog"]
+
+print(Solution().findLadders(beignWord,endWord,wordList))
