@@ -1,0 +1,30 @@
+class Solution:
+    def smallestRange(self, nums: List[List[int]]) -> List[int]:
+        heap = []
+        cur_max = nums[0][0]
+        cur_min = nums[0][0]
+
+        for i in range(len(nums)):
+            heapq.heappush(heap, (nums[i][0], i, 0)) 
+            cur_max = max(cur_max, nums[i][0])
+            cur_min = min(cur_min, nums[i][0])
+
+        res = [cur_min, cur_max]
+
+        while heap:
+            ele, i, ind = heapq.heappop(heap)
+            ind += 1
+            if ind == len(nums[i]):
+                return res
+
+            heapq.heappush(heap, (nums[i][ind], i, ind))
+            cur_max = max(cur_max, nums[i][ind])
+            cur_min = heap[0][0]  # smallest in heap
+
+            if cur_max - cur_min < res[1] - res[0]:
+                res = [cur_min, cur_max]  # fixed variable names
+
+        return res
+
+nums = [[4,10,15,24,26],[0,9,12,20],[5,18,22,30]]
+print(Solution().smallestRange(nums))
