@@ -1,0 +1,24 @@
+class Solution:
+    def integerBreak(self, n: int) -> int:
+        if n==0:
+            return 0
+        res,ma=0,0
+        def dfs(i,li,s,p):
+            nonlocal res,ma
+            if i==n and s<=n:
+                if p>ma:
+                    ma=max(ma,p)
+                    res=p
+                return
+            if i>n or s>n:
+                return
+            li.append(i)
+            dfs(i,li,s+i,p*i)
+            li.pop()
+            dfs(i+1,li,s,p)
+            return
+        dfs(1,[],0,1)
+        return res
+
+n=10          
+print(Solution().integerBreak(n))
