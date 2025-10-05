@@ -1,0 +1,30 @@
+class Solution:
+    def targetIndices(self, nums: List[int], target: int) -> List[int]:
+        nums.sort()
+        l, r = 0, len(nums) - 1
+
+        # find first occurrence
+        while l <= r:
+            m = (l + r) // 2
+            if nums[m] < target:
+                l = m + 1
+            else:
+                r = m - 1
+        start = l
+
+        # find last occurrence
+        l, r = 0, len(nums) - 1
+        while l <= r:
+            m = (l + r) // 2
+            if nums[m] <= target:
+                l = m + 1
+            else:
+                r = m - 1
+        end = r
+
+        if start <= end:
+            return list(range(start, end + 1))
+        return []
+nums = [1,2,5,2,3,2,1] 
+target = 2
+print(Solution().targetIndices(nums,target))
