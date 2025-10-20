@@ -1,0 +1,23 @@
+class Solution:
+    def findWords(self, words: List[str]) -> List[str]:
+        l1=["q","w","e","r","t","y","u","i","o","p"]
+        l2=["a","s","d","f","g","h","j","k","l"]
+        l3=["z","x","c","v","b","n","m"]
+        l1s=set(l1)
+        l2s=set(l2)
+        l3s=set(l3)
+        res=[]
+        for word in words:
+            n=set()
+            for ele in word:
+                n.add(ele.lower())
+            if len(n & l1s)==len(n):
+                res.append(word)
+            elif len(n&l2s)==len(n):
+                res.append(word)
+            elif len(n&l3s)==len(n):
+                res.append(word)
+        return res
+
+words = ["Hello","Alaska","Dad","Peace"]
+print(Solution().findWords(words))
