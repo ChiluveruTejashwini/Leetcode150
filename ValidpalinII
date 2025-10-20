@@ -1,0 +1,22 @@
+class Solution:
+    def validPalindrome(self, s: str) -> bool:
+        memo = {}
+
+        def dfs(i, j, c):
+            if i >= j:
+                return True
+            if (i, j, c) in memo:
+                return memo[(i, j, c)]
+
+            if s[i] == s[j]:
+                memo[(i, j, c)] = dfs(i + 1, j - 1, c)
+            elif c > 0:  # allow one deletion
+                memo[(i, j, c)] = dfs(i + 1, j, c - 1) or dfs(i, j - 1, c - 1)
+            else:
+                memo[(i, j, c)] = False
+
+            return memo[(i, j, c)]
+
+        return dfs(0, len(s) - 1, 1)
+s = "aba"
+print(Solution().validPalindrome(s))
