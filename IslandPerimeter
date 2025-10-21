@@ -1,0 +1,31 @@
+class Solution:
+    def islandPerimeter(self, grid: List[List[int]]) -> int:
+        direc = [(0, 1), (1, 0), (-1, 0), (0, -1)]
+        m, n = len(grid), len(grid[0])
+        visit = set()
+        per = 0
+
+        def dfs(i, j):
+            nonlocal per
+            visit.add((i, j))
+            c = 4
+            for dx, dy in direc:
+                ni, nj = i + dx, j + dy
+                if 0 <= ni < m and 0 <= nj < n and grid[ni][nj] == 1:
+                    c -= 1
+                    if (ni, nj) not in visit:
+                        dfs(ni, nj)
+            per += c
+
+        for i in range(m):
+            for j in range(n):
+                if grid[i][j] == 1:
+                    dfs(i, j)
+                    return per  # ✅ exit after first island
+
+        return per
+
+grid=[[0,1,0,0],[1,1,1,0],[0,1,0,0],[1,1,0,0]]
+print(Solution().islandPerimeter(grid))
+                    
+
