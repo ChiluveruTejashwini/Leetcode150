@@ -1,0 +1,26 @@
+class Solution:
+    def minimumPairRemoval(self, nums: List[int]) -> int:
+        counter = 0
+        temp = nums[:]
+
+        while temp != sorted(temp):
+            s = float("inf")
+            ind = -1
+
+            # 🔧 Find the pair with the smallest sum
+            for i in range(1, len(temp)):
+                if s > temp[i - 1] + temp[i]:
+                    s = temp[i - 1] + temp[i]
+                    ind = i
+
+            # 🔧 Replace the pair with their sum correctly
+            if ind != -1:
+                temp[ind - 1] = s
+                temp.pop(ind)
+                counter += 1
+            else:
+                break
+
+        return counter
+nums=[53212]
+print(Solution().minimumPairRemoval(nums))
