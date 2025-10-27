@@ -1,0 +1,19 @@
+class Solution:
+    def surfaceArea(self, grid: List[List[int]]) -> int:
+        res=0
+        visited=set()
+        m=len(grid)
+        n=len(grid[0])
+        for i in range(len(grid)):
+            for j in range(len(grid[0])):
+                if grid[i][j]!=0:
+                    res+=6*grid[i][j]
+                    res -= 2 * (grid[i][j] - 1)
+                    visited.add((i,j))
+                    for dx,dy in [(0,1),(1,0),(0,-1),(-1,0)]:
+                        if 0<=dx+i<m and 0<=dy+j<n and (i+dx,j+dy) not in visited:
+                            res-=2*min(grid[i][j],grid[dx+i][dy+j])
+                            visited.add((i,j))
+        return res
+grid=[[1,1,1],[1,0,1],[1,1,1]]
+print(Solution().surfaceArea(grid))
